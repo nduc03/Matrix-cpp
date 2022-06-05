@@ -23,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="matrix mul.py" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -1,5 +1,0 @@
-matrix get input: C
-matrix file validation: C
-matrix calculation: Reuse Python
-input file name: data.mtx
-build file: build.bat
