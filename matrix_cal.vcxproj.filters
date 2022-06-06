@@ -32,5 +32,8 @@
     <ClInclude Include="MatrixRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="nduc\Keycode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

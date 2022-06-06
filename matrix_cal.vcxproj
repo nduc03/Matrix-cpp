@@ -23,6 +23,7 @@
     <ProjectGuid>{4539B93D-161A-456C-BB51-4797BE2F2BF7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Matrix C++</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -132,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MatrixRenderer.h" />
+    <ClInclude Include="nduc\Keycode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
