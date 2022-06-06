@@ -14,9 +14,25 @@ const int ARROW_DOWN = 80;
 const int CHAR_SLASH = 47;
 const int CHAR_MINUS = 45;
 const int CHAR_NINE = 57;
+const int CHAR_ZERO = 48;
 const int KEY_ENTER = 13;
+const int INVALID_KEY = -1;
+const int BACKSPACE = 8;
+const int CHAR_POINT = 46;
 
-std::string MatrixToString(Matrix matrix, uint32_t currentRow, uint32_t currentColumn) {
+std::string trim(const std::string& value) {
+	std::string result = value;
+	if (value.starts_with(' ')) {
+		result.erase(0, result.find_first_not_of(' '));
+	}
+	if (value.ends_with(' ')) {
+		auto offset = result.find_first_of(' ');
+		result.erase(offset, result.size() - offset);
+	}
+	return result;
+}
+
+std::string renderMatrix(const Matrix& matrix, uint32_t currentRow, uint32_t currentColumn) {
 	if (matrix.getRow() == 0 || matrix.getColumn() == 0) return "empty matrix";
 	if (currentRow > matrix.getRow() || currentColumn > matrix.getColumn()) return matrix.toString();
 	MatrixHelper::matrix_t mat = matrix.getMatrix();
@@ -45,14 +61,15 @@ std::string MatrixToString(Matrix matrix, uint32_t currentRow, uint32_t currentC
 	return result;
 }
 
-int filterInput() {
+int filteredInput() {
 	int ch = _getch();
-	if (ch == SPECIAL_KEY_1 || ch == SPECIAL_KEY_2) {
-		return _getch();
-	}
-	else if (ch == KEY_ENTER || (ch > CHAR_MINUS && ch != CHAR_SLASH && ch < CHAR_NINE)) {
-		return ch;
-	}
+	if (ch == SPECIAL_KEY_1 || ch == SPECIAL_KEY_2) return _getch();
+	else if (
+		ch == KEY_ENTER ||
+		ch == BACKSPACE ||
+		ch == CHAR_MINUS ||
+		(ch > CHAR_MINUS && ch != CHAR_SLASH && ch < CHAR_NINE)
+		) return ch;
 	else return -1;
 }
 
@@ -72,14 +89,46 @@ void handleUp() {}
 void handleDown() {}
 void handleLeft() {}
 void handleRight() {}
-void handleNext(std::string currentValue) {
-	// check if current value is exceed double max value
+void handleNext(const std::string& currentValue) {
+	if (currentValue.ends_with('.')) return;
+	if (currentValue.size() > 10) throw std::exception("Input is too big.");
+
 }
 
-void handleInput() {
-	int input = filterInput();
-	while (input != KEY_ENTER) {
-
+void handleInput(std::string& currentValue) {
+	currentValue = trim(currentValue);
+	int input = filteredInput();
+	switch (input)
+	{
+		// case ARROW up down left right
+	case CHAR_MINUS:
+		if (currentValue.size() > 10) break; // Limit max char
+		if (currentValue.starts_with('-')) break;
+		if (currentValue.empty()) {
+			currentValue.push_back('-');
+			std::cout << '-';
+		}
+		break;
+	case CHAR_POINT:
+		if (currentValue.size() > 10) break;
+		if (currentValue.find('.') != std::string::npos) break;
+		currentValue.push_back('.');
+		std::cout << '.';
+		break;
+	case BACKSPACE:
+		if (currentValue.empty()) break;
+		std::cout << "\b \b"; // backspace
+		currentValue.pop_back();
+		break;
+	case KEY_ENTER:
+		handleNext(currentValue);
+	default:
+		if (currentValue.size() > 10) break;
+		if (input >= CHAR_ZERO && input <= CHAR_NINE) {
+			currentValue.push_back((char)input);
+			std::cout << (char)input;
+		}
+		break;
 	}
 }
 
@@ -95,36 +144,5 @@ void print(const std::string& string) {
 }
 
 int main() {
-	/*HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (WORD i = 0; i < 255; i++) {
-		SetConsoleTextAttribute(hConsole, i);
-		std::cout << i << ". Yoooo!\n";
-	}*/
-	MatrixHelper::matrix_t a = createMatrix(15, 10);
-	a[5][5] = 1000.0;
-	Matrix matA = Matrix(a);
-	unsigned int row = 0;
-	unsigned int col = 0;
-	while (true) {
-		print(MatrixToString(matA, row, col));
-		std::cout << row << "x" << col << std::endl;
-		switch (filterInput())
-		{
-		case ARROW_UP:
-			row--; break;
-		case ARROW_DOWN:
-			row++; break;
-		case ARROW_LEFT:
-			col--; break;
-		case ARROW_RIGHT:
-			col++; break;
-		case KEY_ENTER:
-			// handleNext()
-			break;
-		default:
-			break;
-		}
-		system("cls");
-	}
 	system("pause");
 }

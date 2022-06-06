@@ -21,16 +21,15 @@ public:
 };
 
 class Matrix {
-private:
+protected:
 	typedef std::vector<std::vector<double>> matrix_t;
-
-	int m_row = 0, m_column = 0;
+private:
+	int m_row, m_column;
 	matrix_t m_matrix;
 
 	static matrix_t mul(const matrix_t& matrixA, const matrix_t& matrixB);
 	static matrix_t _plus(const matrix_t& matrixA, const matrix_t& matrixB);
 	static matrix_t minus(const matrix_t& matrixA, const matrix_t& matrixB);
-
 public:
 	Matrix(matrix_t matrix);
 
@@ -48,15 +47,14 @@ public:
 	static Matrix plus(const Matrix& matrixA, const Matrix& matrixB);
 	static Matrix subtract(const Matrix& matrixA, const Matrix& matrixB);
 
-	std::string toString();
+	std::string toString() const;
 };
 
 class MatrixHelper {
-private:
-	MatrixHelper() {}
 public:
 	typedef std::vector<std::vector<double>> matrix_t;
 
+	MatrixHelper() = delete;
 	static int findMaxLen(matrix_t matrix);
 	static std::string fillSpaceLeft(const std::string& value, int requiredLength);
 	static std::string truncateZero(const std::string& value);

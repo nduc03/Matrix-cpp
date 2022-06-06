@@ -88,21 +88,19 @@ Matrix::matrix_t Matrix::minus(const matrix_t& matrixA, const matrix_t& matrixB)
 }
 
 int Matrix::getRow() const { return m_row; }
+
 int Matrix::getColumn() const { return m_column; }
+
 bool Matrix::isSquare() const { return m_row == m_column && m_row > 0; }
-/// <summary>
-/// Get element of matrix. Please note that the matrix position start with 1 instead of 0.
-/// </summary>
-/// <param name="row">- Position start with 1</param>
-/// <param name="column">- Position start with 1</param>
-/// <returns>Element of matrix</returns>
+
 std::string Matrix::getElement(int row, int column) const {
 	if (row < 1 || column < 1) throw std::out_of_range("Invalid position.");
-	return MatrixHelper::truncateZero(std::to_string(m_matrix.at(row - 1).at(column - 1)));
+	return MatrixHelper::truncateZero(std::to_string(m_matrix.at(row).at(column)));
 }
+
 Matrix::matrix_t Matrix::getMatrix() const { return m_matrix; }
 
-Matrix::Matrix(Matrix::matrix_t matrix) {
+Matrix::Matrix(matrix_t matrix) {
 	this->m_matrix = matrix;
 	this->m_row = matrix.size();
 	this->m_column = matrix[0].size();
@@ -152,7 +150,7 @@ Matrix Matrix::subtract(const Matrix& matrixA, const Matrix& matrixB) {
 	return Matrix(result);
 }
 
-std::string Matrix::toString() {
+std::string Matrix::toString() const {
 	if (m_row == 0 || m_column == 0) return "empty matrix";
 	int maxLen = MatrixHelper::findMaxLen(m_matrix);
 	std::string result = "";
