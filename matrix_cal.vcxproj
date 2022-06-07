@@ -128,10 +128,14 @@
   <ItemGroup>
     <ClCompile Include="input.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MatrixError.cpp" />
+    <ClCompile Include="MatrixHelper.cpp" />
     <ClCompile Include="MatrixRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MatrixError.h" />
+    <ClInclude Include="MatrixHelper.h" />
     <ClInclude Include="MatrixRenderer.h" />
     <ClInclude Include="nduc\Keycode.h" />
   </ItemGroup>

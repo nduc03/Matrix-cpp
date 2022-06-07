@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <conio.h>
-#include <Windows.h>
 #include "Matrix.h"
 #include "nduc/Keycode.h"
+#include "MatrixHelper.h"
+#include "MatrixRenderer.h"
+#include <conio.h>
 
 std::string trim(const std::string& value) {
 	std::string result = value;
@@ -14,35 +15,6 @@ std::string trim(const std::string& value) {
 	if (value.ends_with(' ')) {
 		auto offset = result.find_first_of(' ');
 		result.erase(offset, result.size() - offset);
-	}
-	return result;
-}
-
-std::string renderMatrix(const Matrix& matrix, uint32_t currentRow, uint32_t currentColumn) {
-	if (matrix.getRow() == 0 || matrix.getColumn() == 0) return "empty matrix";
-	if (currentRow > matrix.getRow() || currentColumn > matrix.getColumn()) return matrix.toString();
-	MatrixHelper::matrix_t mat = matrix.getMatrix();
-	int maxLen = MatrixHelper::findMaxLen(mat);
-	std::string result = "";
-	std::string beforeEle = "|";
-	std::string afterEle = "|";
-	for (int row = 0; row < mat.size(); row++) {
-		for (int col = 0; col < mat.at(row).size(); col++) {
-			if (row == currentRow && col == currentColumn) {
-				beforeEle = "[";
-				if (col == mat.at(row).size() - 1) afterEle = "]";
-			}
-			else if (row == currentRow && col != mat.at(row).size() && col - 1 == currentColumn) {
-				beforeEle = "]";
-			}
-			std::string adjustedElement = beforeEle + MatrixHelper::fillSpaceLeft(
-				MatrixHelper::truncateZero(std::to_string(mat.at(row).at(col))), maxLen
-			);
-			result.append(adjustedElement);
-			beforeEle = "|";
-		}
-		result.append(afterEle + "\n");
-		afterEle = "|";
 	}
 	return result;
 }
@@ -57,18 +29,6 @@ int filteredInput() {
 		(ch > CHAR_MINUS && ch != CHAR_SLASH && ch < CHAR_NINE)
 		) return ch;
 	else return -1;
-}
-
-void initMatrix(MatrixHelper::matrix_t& empty_matrix, int row, int column) {
-	if (row < 1 || column < 1) throw MatrixError("Invalid row or column.");
-	auto temp = std::vector<double>(column, 0.0);
-	empty_matrix = MatrixHelper::matrix_t(row, temp);
-}
-
-MatrixHelper::matrix_t createMatrix(int row, int column) {
-	if (row < 1 || column < 1) throw MatrixError("Invalid row or column.");
-	auto temp = std::vector<double>(column, 0.0);
-	return MatrixHelper::matrix_t(row, temp);
 }
 
 void handleUp() {}
@@ -118,17 +78,10 @@ void handleInput(std::string& currentValue) {
 	}
 }
 
-void print(const std::string& string) {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	const int COLOR = 31;
-	const int DEFAULT_COLOR = 15;
-	for (auto& ch : string) {
-		if (ch == '[' || ch == ']') SetConsoleTextAttribute(hConsole, COLOR);
-		else SetConsoleTextAttribute(hConsole, DEFAULT_COLOR);
-		std::cout << ch;
-	}
-}
-
 int main() {
+	auto matA = MatrixHelper::createMatrix(10, 10);
+	matA[5][5] = 10000.0;
+	auto matA_r = MatrixRenderer(matA);
+	matA_r.go_to(5, 5)->printWithIndicator();
 	system("pause");
 }

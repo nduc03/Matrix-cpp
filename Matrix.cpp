@@ -1,43 +1,6 @@
 #include "Matrix.h"
-
-MatrixError::MatrixError(std::string msg) {
-	this->msg = msg;
-}
-std::string MatrixError::reason() {
-	return msg;
-}
-
-MatrixMultiplyError::MatrixMultiplyError(std::string msg) : MatrixError(msg) {}
-
-MatrixPlusMinusError::MatrixPlusMinusError(std::string msg) : MatrixError(msg) {}
-
-int MatrixHelper::findMaxLen(matrix_t matrix) {
-	int max = 1;
-	for (auto& row : matrix) {
-		for (auto& ele : row) {
-			int len = truncateZero(std::to_string(ele)).size();
-			if (len > max) max = len;
-		}
-	}
-	return max;
-}
-
-std::string MatrixHelper::fillSpaceLeft(const std::string& value, int requiredLength) {
-	std::string result = "";
-	int requiredSpace = requiredLength - value.size();
-	for (int i = 0; i < requiredSpace; i++) {
-		result += " ";
-	}
-	return result + value;
-}
-
-std::string MatrixHelper::truncateZero(const std::string& value) {
-	std::string result = value;
-	while ((result.back() == '0' && result.find('.') != std::string::npos) || result.back() == '.') {
-		result.pop_back();
-	}
-	return result;
-}
+#include "MatrixHelper.h"
+#include "MatrixError.h"
 
 Matrix::matrix_t Matrix::mul(const matrix_t& matrixA, const matrix_t& matrixB) {
 	if (matrixA[0].size() != matrixB.size()) throw MatrixMultiplyError("Invalid dimension, can't multiply");
@@ -105,6 +68,7 @@ Matrix::Matrix(matrix_t matrix) {
 	this->m_row = matrix.size();
 	this->m_column = matrix[0].size();
 	if (m_row < 1 || m_column < 1) throw MatrixError("Invalid matrix");
+	if (m_row > 20 || m_column > 20) throw MatrixError("Matrix size is too big.");
 	for (int row = 1; row < m_row; row++) {
 		if (matrix[row].size() != m_column) throw MatrixError("Invalid matrix. Size of columns not the same.");
 	}
