@@ -29,6 +29,6 @@ private:
 	matrix_t m_matrix;
 
 	static matrix_t   mul(const matrix_t& matrixA, const matrix_t& matrixB);
-	static matrix_t _plus(const matrix_t& matrixA, const matrix_t& matrixB);
+	static matrix_t add(const matrix_t& matrixA, const matrix_t& matrixB);
 	static matrix_t minus(const matrix_t& matrixA, const matrix_t& matrixB);
 };

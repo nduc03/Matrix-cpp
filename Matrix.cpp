@@ -21,7 +21,7 @@ Matrix::matrix_t Matrix::mul(const matrix_t& matrixA, const matrix_t& matrixB) {
 	return result;
 }
 
-Matrix::matrix_t Matrix::_plus(const matrix_t& matrixA, const matrix_t& matrixB) {
+Matrix::matrix_t Matrix::add(const matrix_t& matrixA, const matrix_t& matrixB) {
 	if (matrixA.size() != matrixB.size() || matrixA[0].size() != matrixB[0].size())
 		throw MatrixPlusMinusError("Invalid dimension, can't plus");
 	matrix_t result;
@@ -97,14 +97,14 @@ Matrix Matrix::multiply(const Matrix& matrixA, const Matrix& matrixB) {
 Matrix Matrix::plusWith(const Matrix& matrix) {
 	if (this->m_column != matrix.getColumn() || this->m_row != matrix.getRow())
 		throw MatrixMultiplyError("Invalid dimension. Cannot plus.");
-	matrix_t result = _plus(this->m_matrix, matrix.getMatrix());
+	matrix_t result = add(this->m_matrix, matrix.getMatrix());
 	return Matrix(result);
 }
 
 Matrix Matrix::plus(const Matrix& matrixA, const Matrix& matrixB) {
 	if (matrixA.getColumn() != matrixB.getColumn() || matrixA.getRow() != matrixB.getRow())
 		throw MatrixMultiplyError("Invalid dimension. Cannot plus.");
-	matrix_t result = _plus(matrixA.getMatrix(), matrixB.getMatrix());
+	matrix_t result = add(matrixA.getMatrix(), matrixB.getMatrix());
 	return Matrix(result);
 }
 
