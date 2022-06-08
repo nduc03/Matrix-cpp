@@ -17,5 +17,6 @@ const int CHAR_NINE = 57;
 
 const int BACKSPACE = 8;
 const int KEY_ENTER = 13;
+const int CTRL_S = 19;
 
 const int INVALID_KEY = -1;

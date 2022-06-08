@@ -2,13 +2,14 @@
 #include <conio.h>
 #include "MatrixRenderer.h"
 #include "MatrixHelper.h"
+#include "Utils.h"
 
-int MatrixRenderer::getCurrentRow() const
+uint32_t MatrixRenderer::getCurrentRow() const
 {
 	return this->currentRow;
 }
 
-int MatrixRenderer::getCurrentColumn() const
+uint32_t MatrixRenderer::getCurrentColumn() const
 {
 	return this->currentColumn;
 }
@@ -31,7 +32,7 @@ MatrixRenderer* MatrixRenderer::up()
 
 MatrixRenderer* MatrixRenderer::down()
 {
-	if (this->currentRow > 0) currentRow++;
+	if (this->currentRow < this->getRow() - 1) currentRow++;
 	return this;
 }
 
@@ -43,17 +44,18 @@ MatrixRenderer* MatrixRenderer::left()
 
 MatrixRenderer* MatrixRenderer::right()
 {
-	if (this->currentColumn > 0) currentColumn++;
-
+	if (this->currentColumn < this->getColumn() - 1) currentColumn++;
 	return this;
 }
 
 MatrixRenderer* MatrixRenderer::next()
 {
-	if (this->currentColumn >= this->getColumn()) {
+	if (this->currentColumn == this->getColumn() - 1 && this->currentRow == this->getRow() - 1)
+		return this->go_to(0, 0);
+	if (this->currentColumn >= this->getColumn() - 1) {
 		return this->down()->go_to(currentRow, 0);
 	}
-	return this->left();
+	return this->right();
 }
 
 MatrixRenderer* MatrixRenderer::go_to(uint32_t row, uint32_t column)
@@ -63,6 +65,11 @@ MatrixRenderer* MatrixRenderer::go_to(uint32_t row, uint32_t column)
 		this->currentRow = row;
 	}
 	return this;
+}
+
+void MatrixRenderer::setCurrentElement(double value)
+{
+	this->setElement(value, currentRow, currentColumn);
 }
 
 std::string MatrixRenderer::toStringWithIndicator()
@@ -84,7 +91,7 @@ std::string MatrixRenderer::toStringWithIndicator()
 				beforeEle = "]";
 			}
 			std::string adjustedElement = beforeEle + MatrixHelper::fillSpaceLeft(
-				MatrixHelper::truncateZero(std::to_string(matrix.at(row).at(col))), maxLen
+				truncateZero(std::to_string(matrix.at(row).at(col))), maxLen
 			);
 			result.append(adjustedElement);
 			beforeEle = "|";

@@ -1,6 +1,7 @@
 #include "Matrix.h"
 #include "MatrixHelper.h"
 #include "MatrixError.h"
+#include "Utils.h"
 
 Matrix::matrix_t Matrix::mul(const matrix_t& matrixA, const matrix_t& matrixB) {
 	if (matrixA[0].size() != matrixB.size()) throw MatrixMultiplyError("Invalid dimension, can't multiply");
@@ -50,15 +51,22 @@ Matrix::matrix_t Matrix::minus(const matrix_t& matrixA, const matrix_t& matrixB)
 	return result;
 }
 
-int Matrix::getRow() const { return m_row; }
+uint32_t Matrix::getRow() const { return m_row; }
 
-int Matrix::getColumn() const { return m_column; }
+uint32_t Matrix::getColumn() const { return m_column; }
 
 bool Matrix::isSquare() const { return m_row == m_column && m_row > 0; }
 
-std::string Matrix::getElement(int row, int column) const {
-	if (row < 1 || column < 1) throw std::out_of_range("Invalid position.");
-	return MatrixHelper::truncateZero(std::to_string(m_matrix.at(row).at(column)));
+std::string Matrix::getElement(uint32_t row, uint32_t column) const {
+	if (row > m_row || column > m_column) throw std::out_of_range("Invalid position.");
+	return truncateZero(std::to_string(m_matrix.at(row).at(column)));
+}
+
+void Matrix::setElement(double value, uint32_t row, uint32_t column)
+{
+	if (truncateZero(std::to_string(value)).size() > 10) throw std::exception("Value is to big");
+	if (row > m_row || column > m_column) throw std::exception("Invalid row or column.");
+	m_matrix[row][column] = value;
 }
 
 Matrix::matrix_t Matrix::getMatrix() const { return m_matrix; }
@@ -118,14 +126,19 @@ std::string Matrix::toString() const {
 	if (m_row == 0 || m_column == 0) return "empty matrix";
 	int maxLen = MatrixHelper::findMaxLen(m_matrix);
 	std::string result = "";
+	std::string before = "|", after = "|";
+	if (m_row == 1 && m_column == 1) {
+		before = "[";
+		after = "]";
+	}
 	for (auto& row : m_matrix) {
 		for (auto& element : row) {
-			std::string adjustedElement = "|" + MatrixHelper::fillSpaceLeft(
-				MatrixHelper::truncateZero(std::to_string(element)), maxLen
+			std::string adjustedElement = before + MatrixHelper::fillSpaceLeft(
+				truncateZero(std::to_string(element)), maxLen
 			);
 			result.append(adjustedElement);
 		}
-		result.append("|\n");
+		result.append(after + "\n");
 	}
 	return result;
 }

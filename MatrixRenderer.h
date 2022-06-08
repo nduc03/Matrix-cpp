@@ -3,8 +3,8 @@
 class MatrixRenderer : public Matrix
 {
 public:
-	int getCurrentRow() const;
-	int getCurrentColumn() const;
+	uint32_t getCurrentRow() const;
+	uint32_t getCurrentColumn() const;
 	MatrixRenderer(matrix_t matrix);
 	MatrixRenderer(Matrix matrix);
 	MatrixRenderer* up();
@@ -13,9 +13,10 @@ public:
 	MatrixRenderer* right();
 	MatrixRenderer* next();
 	MatrixRenderer* go_to(uint32_t row, uint32_t column);
+	void setCurrentElement(double value);
 	std::string toStringWithIndicator();
 	void printWithIndicator();
 private:
-	int currentRow, currentColumn;
+	uint32_t currentRow, currentColumn;
 };
 

@@ -1,6 +1,7 @@
 #include "MatrixHelper.h"
 #include "Matrix.h"
 #include "MatrixError.h"
+#include "Utils.h"
 
 int MatrixHelper::findMaxLen(matrix_t matrix) {
 	int max = 1;
@@ -20,14 +21,6 @@ std::string MatrixHelper::fillSpaceLeft(const std::string& value, int requiredLe
 		result += " ";
 	}
 	return result + value;
-}
-
-std::string MatrixHelper::truncateZero(const std::string& value) {
-	std::string result = value;
-	while ((result.back() == '0' && result.find('.') != std::string::npos) || result.back() == '.') {
-		result.pop_back();
-	}
-	return result;
 }
 
 void MatrixHelper::initMatrix(matrix_t& empty_matrix, int row, int column) {
