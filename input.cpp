@@ -114,7 +114,7 @@ Matrix::matrix_t initMatrixFromInput(std::string matrixName) {
 }
 
 void start() {
-	std::cout << "This program still in development and it will definitely crash if user pass the illegitimate input.\n";
+	std::cout << "This program still in development and it will definitely crash if user pass illegitimate input.\n";
 	std::cout << "Matrix calculator (very beta)\n-------------------------------------\n";
 	Matrix::matrix_t matA = initMatrixFromInput("A"), matB = initMatrixFromInput("B");
 	MatrixRenderer matrixA = MatrixRenderer(matA), matrixB = MatrixRenderer(matB);
@@ -122,8 +122,9 @@ void start() {
 	Matrix a = handleInput(currentValue, matrixA, "A");
 	Matrix b = handleInput(currentValue, matrixB, "B");
 	unsigned int option;
-	std::cout << "Options:\n1. A+B\n2. A-B\n3. B-A\n4. AxB\n5. BxA\n";
+	std::cout << "\nOptions:\n1. A+B\n2. A-B\n3. B-A\n4. AxB\n5. BxA\n";
 	std::cin >> option;
+	system("cls");
 	switch (option)
 	{
 	case 1:

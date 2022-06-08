@@ -5,7 +5,7 @@ int main() {
 	while (true)
 	{
 		start();
-		_getch();
+		system("pause");
 		system("cls");
 	}
 }
