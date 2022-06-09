@@ -2,6 +2,8 @@
 #include <string>
 #include "MatrixRenderer.h"
 
+const int VALUE_CHAR_LIMIT = 7;
+
 int getFilteredInput();
 void handleUp(std::string& currentValue, MatrixRenderer& matrixRenderer);
 void handleDown(std::string& currentValue, MatrixRenderer& matrixRenderer);

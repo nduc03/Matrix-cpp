@@ -13,6 +13,11 @@ const int CHAR_POINT = 46;
 const int CHAR_SLASH = 47;
 
 const int CHAR_ZERO = 48;
+const int CHAR_ONE = 49;
+const int CHAR_TWO = 50;
+const int CHAR_THREE = 51;
+const int CHAR_FOUR = 52;
+const int CHAR_FIVE = 53;
 const int CHAR_NINE = 57;
 
 const int BACKSPACE = 8;
