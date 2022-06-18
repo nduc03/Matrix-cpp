@@ -1,10 +1,12 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include "Matrix.h"
+
 #include "nduc/Keycode.h"
+#include "Matrix.h"
 #include "MatrixHelper.h"
 #include "MatrixRenderer.h"
+#include "MatrixError.h"
 #include "Input.h"
 #include "Utils.h"
 
@@ -110,33 +112,50 @@ Matrix handleInput(std::string& currentValue, MatrixRenderer& matrixRenderer, st
 	}
 }
 
+void backspace() {
+	std::cout << "\b \b";
+}
+
 unsigned int getRowColInput() {
-	int first_char, second_char;
 	std::string currentValue;
-	while (true)
-	{
-		first_char = _getch();
-		if (first_char == CHAR_ONE) {
-			currentValue.push_back((char)first_char);
-			_putch(first_char);
-			break;
-		}
-		else if (first_char >= CHAR_TWO && first_char <= CHAR_NINE) {
-			currentValue.push_back((char)first_char);
-			_putch(first_char);
-			return std::stod(currentValue);
-		}
-	}
 	while (true) {
-		second_char = _getch();
-		if (second_char == CHAR_ZERO) {
-			currentValue.push_back((char)second_char);
-			_putch(second_char);
-			return std::stod(currentValue);
+		int input = _getch();
+		if (currentValue.empty()) {
+			if (input == CHAR_ONE) {
+				currentValue.push_back((char)input);
+				_putch(input);
+			}
+			else if (input >= CHAR_TWO && input <= CHAR_NINE) {
+				currentValue.push_back((char)input);
+				_putch(input);
+			}
 		}
-		else if (second_char == KEY_ENTER) {
-			return std::stod(currentValue);
+		else if (currentValue.size() == 1) {
+			if (input == CHAR_ZERO && currentValue.back() == CHAR_ONE) {
+				currentValue.push_back((char)input);
+				_putch(input);
+			}
+			else if (input == BACKSPACE) {
+				backspace();
+				currentValue.pop_back();
+			}
+			else if (input == KEY_ENTER) {
+				return std::stod(currentValue);
+			}
 		}
+		else if (currentValue.size() == 2) {
+			if (currentValue.front() == CHAR_ONE && currentValue.at(1) == CHAR_ZERO && input == KEY_ENTER) {
+				return std::stod(currentValue);
+			}
+			else if (currentValue.front() != CHAR_ONE && currentValue.at(1) != CHAR_ZERO) {
+				throw std::exception("Somethings wrong with getRowColInput()");
+			}
+			else if (input == BACKSPACE) {
+				currentValue.pop_back();
+				backspace();
+			}
+		}
+		else throw std::exception("Somethings really wrong with getRowColInput()");
 	}
 }
 
@@ -153,37 +172,45 @@ Matrix::matrix_t initMatrixFromInput(std::string matrixName) {
 }
 
 void start() {
-	std::cout << "Matrix calculator (beta)\n-------------------------------------\n";
+	std::cout << "Matrix calculator (beta)\n-------------------------------------------\n";
 	Matrix::matrix_t matA = initMatrixFromInput("A"), matB = initMatrixFromInput("B");
 	MatrixRenderer matrixA = MatrixRenderer(matA), matrixB = MatrixRenderer(matB);
 	std::string currentValue;
 	Matrix a = handleInput(currentValue, matrixA, "A");
 	Matrix b = handleInput(currentValue, matrixB, "B");
+	system("cls");
 	unsigned int option;
-	std::cout << "\nOptions:\n1. A+B\n2. A-B\n3. B-A\n4. AxB\n5. BxA\n";
+	std::cout << "Options:\n1. A+B\n2. A-B\n3. B-A\n4. AxB\n5. BxA\n";
 	do {
 		option = _getch();
 	} while (!(option >= CHAR_ONE && option <= CHAR_FIVE));
 	system("cls");
-	switch (option)
-	{
-	case CHAR_ONE:
-		std::cout << "A+B is:\n" << Matrix::plus(a, b).toString() << std::endl;
-		break;
-	case CHAR_TWO:
-		std::cout << "A-B is:\n" << Matrix::subtract(a, b).toString() << std::endl;
-		break;
-	case CHAR_THREE:
-		std::cout << "B-A is:\n" << Matrix::subtract(b, a).toString() << std::endl;
-		break;
-	case CHAR_FOUR:
-		std::cout << "AxB is:\n" << Matrix::multiply(a, b).toString() << std::endl;
-		break;
-	case CHAR_FIVE:
-		std::cout << "BxA is:\n" << Matrix::multiply(b, a).toString() << std::endl;
-		break;
-	default:
-		std::cout << "Invalid input. Program closes.";
-		break;
+	try {
+		switch (option)
+		{
+		case CHAR_ONE:
+			std::cout << "A+B is:\n" << Matrix::plus(a, b).toString() << std::endl;
+			break;
+		case CHAR_TWO:
+			std::cout << "A-B is:\n" << Matrix::subtract(a, b).toString() << std::endl;
+			break;
+		case CHAR_THREE:
+			std::cout << "B-A is:\n" << Matrix::subtract(b, a).toString() << std::endl;
+			break;
+		case CHAR_FOUR:
+			std::cout << "AxB is:\n" << Matrix::multiply(a, b).toString() << std::endl;
+			break;
+		case CHAR_FIVE:
+			std::cout << "BxA is:\n" << Matrix::multiply(b, a).toString() << std::endl;
+			break;
+		default:
+			std::cout << "Invalid input. Program closes.";
+			break;
+		}
+	}
+	catch (MatrixError err) {
+		system("cls");
+		std::cout << "!!! Program had a problem !!!\nProgram error message: " << err.reason() << std::endl;
+		return;
 	}
 }

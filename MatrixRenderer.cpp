@@ -3,6 +3,7 @@
 #include "MatrixRenderer.h"
 #include "MatrixHelper.h"
 #include "Utils.h"
+#include <iostream>
 
 uint32_t MatrixRenderer::getCurrentRow() const
 {
@@ -70,14 +71,14 @@ MatrixRenderer* MatrixRenderer::go_to(uint32_t row, uint32_t column)
 void MatrixRenderer::setCurrentElement(double value)
 {
 	this->setElement(value, currentRow, currentColumn);
+	this->maxLen = MatrixHelper::findMaxLen(this->getMatrix());
 }
 
-std::string MatrixRenderer::toStringWithIndicator()
+std::string MatrixRenderer::toStringWithIndicator() const
 {
 	if (this->getRow() == 0 || this->getColumn() == 0) return "Empty matrix.\n";
 	if (currentRow > this->getRow() || currentColumn > this->getColumn()) return this->toString();
 	MatrixHelper::matrix_t matrix = this->getMatrix();
-	int maxLen = MatrixHelper::findMaxLen(matrix);
 	std::string result = "";
 	std::string beforeEle = "|";
 	std::string afterEle = "|";
@@ -91,7 +92,7 @@ std::string MatrixRenderer::toStringWithIndicator()
 				beforeEle = "]";
 			}
 			std::string adjustedElement = beforeEle + MatrixHelper::fillSpaceLeft(
-				truncateZero(std::to_string(matrix.at(row).at(col))), maxLen
+				truncateZero(std::to_string(matrix.at(row).at(col))), this->maxLen
 			);
 			result.append(adjustedElement);
 			beforeEle = "|";
@@ -102,15 +103,29 @@ std::string MatrixRenderer::toStringWithIndicator()
 	return result;
 }
 
-void MatrixRenderer::printWithIndicator()
+void MatrixRenderer::printWithIndicator() const
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	const int COLOR = 31;
 	const int DEFAULT_COLOR = 15;
 	std::string string = this->toStringWithIndicator();
-	for (auto& ch : string) {
-		if (ch == '[' || ch == ']') SetConsoleTextAttribute(hConsole, COLOR);
-		else SetConsoleTextAttribute(hConsole, DEFAULT_COLOR);
-		_putch(ch);
-	}
+
+	std::string begin = string.substr(0, string.find('['));
+	std::cout << begin;
+
+	string = string.erase(0, string.find('[') + 1);
+
+	SetConsoleTextAttribute(hConsole, COLOR);
+	std::cout << '[';
+	SetConsoleTextAttribute(hConsole, DEFAULT_COLOR);
+
+	std::string middle = string.substr(0, string.find(']'));
+	std::cout << middle;
+
+	SetConsoleTextAttribute(hConsole, COLOR);
+	std::cout << ']';
+	SetConsoleTextAttribute(hConsole, DEFAULT_COLOR);
+
+	std::string last = string.erase(0, string.find(']') + 1);
+	std::cout << last;
 }

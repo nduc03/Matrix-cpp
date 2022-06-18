@@ -14,9 +14,9 @@ public:
 	MatrixRenderer* next();
 	MatrixRenderer* go_to(uint32_t row, uint32_t column);
 	void setCurrentElement(double value);
-	std::string toStringWithIndicator();
-	void printWithIndicator();
+	std::string toStringWithIndicator() const;
+	void printWithIndicator() const;
 private:
-	uint32_t currentRow, currentColumn;
+	uint32_t currentRow, currentColumn, maxLen;
 };
 
