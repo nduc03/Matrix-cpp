@@ -96,28 +96,28 @@ Matrix Matrix::multiply(const Matrix& matrixA, const Matrix& matrixB) {
 
 Matrix Matrix::plusWith(const Matrix& matrix) {
 	if (this->m_column != matrix.getColumn() || this->m_row != matrix.getRow())
-		throw MatrixMultiplyError("Invalid dimension. Cannot plus.");
+		throw MatrixPlusMinusError("Invalid dimension. Cannot plus.");
 	matrix_t result = add(this->m_matrix, matrix.getMatrix());
 	return Matrix(result);
 }
 
 Matrix Matrix::plus(const Matrix& matrixA, const Matrix& matrixB) {
 	if (matrixA.getColumn() != matrixB.getColumn() || matrixA.getRow() != matrixB.getRow())
-		throw MatrixMultiplyError("Invalid dimension. Cannot plus.");
+		throw MatrixPlusMinusError("Invalid dimension. Cannot plus.");
 	matrix_t result = add(matrixA.getMatrix(), matrixB.getMatrix());
 	return Matrix(result);
 }
 
 Matrix Matrix::subtractWith(const Matrix& matrix) {
 	if (this->m_column != matrix.getColumn() || this->m_row != matrix.getRow())
-		throw MatrixMultiplyError("Invalid dimension. Cannot subtract.");
+		throw MatrixPlusMinusError("Invalid dimension. Cannot subtract.");
 	matrix_t result = minus(this->m_matrix, matrix.getMatrix());
 	return Matrix(result);
 }
 
 Matrix Matrix::subtract(const Matrix& matrixA, const Matrix& matrixB) {
 	if (matrixA.getColumn() != matrixB.getColumn() || matrixA.getRow() != matrixB.getRow())
-		throw MatrixMultiplyError("Invalid dimension. Cannot subtract.");
+		throw MatrixPlusMinusError("Invalid dimension. Cannot subtract.");
 	matrix_t result = minus(matrixA.getMatrix(), matrixB.getMatrix());
 	return Matrix(result);
 }
@@ -133,7 +133,7 @@ std::string Matrix::toString() const {
 	}
 	for (auto& row : m_matrix) {
 		for (auto& element : row) {
-			std::string adjustedElement = before + MatrixHelper::fillSpaceLeft(
+			std::string adjustedElement = before + fillSpaceLeft(
 				truncateZero(std::to_string(element)), maxLen
 			);
 			result.append(adjustedElement);

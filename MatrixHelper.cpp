@@ -14,15 +14,6 @@ int MatrixHelper::findMaxLen(matrix_t matrix) {
 	return max;
 }
 
-std::string MatrixHelper::fillSpaceLeft(const std::string& value, int requiredLength) {
-	std::string result = "";
-	int requiredSpace = requiredLength - value.size();
-	for (int i = 0; i < requiredSpace; i++) {
-		result += " ";
-	}
-	return result + value;
-}
-
 void MatrixHelper::initMatrix(matrix_t& empty_matrix, int row, int column) {
 	if (row < 1 || column < 1) throw MatrixError("Invalid row or column.");
 	if (row > 20 || column > 20) throw MatrixError("Matrix size is too big.");

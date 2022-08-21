@@ -19,3 +19,12 @@ std::string truncateZero(const std::string& value) {
 	}
 	return result;
 }
+
+std::string fillSpaceLeft(const std::string& value, int requiredLength) {
+	std::string result = "";
+	int requiredSpace = requiredLength - value.size();
+	for (int i = 0; i < requiredSpace; i++) {
+		result += " ";
+	}
+	return result + value;
+}

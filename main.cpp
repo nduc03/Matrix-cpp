@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "InputHandler.h"
 
 int main() {
 	while (true)

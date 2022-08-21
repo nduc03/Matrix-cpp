@@ -91,7 +91,7 @@ std::string MatrixRenderer::toStringWithIndicator() const
 			else if (row == currentRow && col != matrix.at(row).size() && col - 1 == currentColumn) {
 				beforeEle = "]";
 			}
-			std::string adjustedElement = beforeEle + MatrixHelper::fillSpaceLeft(
+			std::string adjustedElement = beforeEle + fillSpaceLeft(
 				truncateZero(std::to_string(matrix.at(row).at(col))), this->maxLen
 			);
 			result.append(adjustedElement);

@@ -7,7 +7,7 @@
 #include "MatrixHelper.h"
 #include "MatrixRenderer.h"
 #include "MatrixError.h"
-#include "Input.h"
+#include "InputHandler.h"
 #include "Utils.h"
 
 int getFilteredInput() {
