@@ -55,17 +55,17 @@ uint32_t Matrix::getRow() const { return m_row; }
 
 uint32_t Matrix::getColumn() const { return m_column; }
 
-bool Matrix::isSquare() const { return m_row == m_column && m_row > 0; }
+bool Matrix::isSquare() const { return m_row > 0 && m_row == m_column; }
 
 std::string Matrix::getElement(uint32_t row, uint32_t column) const {
 	if (row > m_row || column > m_column) throw std::out_of_range("Invalid position.");
-	return truncateZero(std::to_string(m_matrix.at(row).at(column)));
+	return truncateZero(std::to_string(m_matrix[row][column]));
 }
 
 void Matrix::setElement(double value, uint32_t row, uint32_t column)
 {
 	if (truncateZero(std::to_string(value)).size() > 10) throw std::exception("Value is to big");
-	if (row > m_row || column > m_column) throw std::exception("Invalid row or column.");
+	if (row > m_row || column > m_column) throw std::out_of_range("Invalid row or column when setting element.");
 	m_matrix[row][column] = value;
 }
 
@@ -76,7 +76,7 @@ Matrix::Matrix(matrix_t matrix) {
 	this->m_row = matrix.size();
 	this->m_column = matrix[0].size();
 	if (m_row < 1 || m_column < 1) throw MatrixError("Invalid matrix");
-	if (m_row > 20 || m_column > 20) throw MatrixError("Matrix size is too big.");
+	if (m_row > 10 || m_column > 10) throw MatrixError("Matrix size is too big.");
 	for (int row = 1; row < m_row; row++) {
 		if (matrix[row].size() != m_column) throw MatrixError("Invalid matrix. Size of columns not the same.");
 	}
