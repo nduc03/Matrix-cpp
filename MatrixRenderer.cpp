@@ -81,12 +81,12 @@ std::string MatrixRenderer::toStringWithIndicator() const
 	MatrixHelper::matrix_t matrix = this->getMatrix();
 	std::string result = "";
 	std::string beforeEle = "|";
-	std::string afterEle = "|";
+	std::string afterLastEle = "|";
 	for (int row = 0; row < matrix.size(); row++) {
 		for (int col = 0; col < matrix.at(row).size(); col++) {
 			if (row == currentRow && col == currentColumn) {
 				beforeEle = "[";
-				if (col == matrix.at(row).size() - 1) afterEle = "]";
+				if (col == matrix.at(row).size() - 1) afterLastEle = "]";
 			}
 			else if (row == currentRow && col != matrix.at(row).size() && col - 1 == currentColumn) {
 				beforeEle = "]";
@@ -97,8 +97,8 @@ std::string MatrixRenderer::toStringWithIndicator() const
 			result.append(adjustedElement);
 			beforeEle = "|";
 		}
-		result.append(afterEle + "\n");
-		afterEle = "|";
+		result.append(afterLastEle + "\n");
+		afterLastEle = "|";
 	}
 	return result;
 }
