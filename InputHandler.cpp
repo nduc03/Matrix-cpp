@@ -175,9 +175,9 @@ void start() {
 	std::cout << "Matrix calculator (beta)\n-------------------------------------------\n";
 	Matrix::matrix_t matA = initMatrixFromInput("A"), matB = initMatrixFromInput("B");
 	MatrixRenderer matrixA = MatrixRenderer(matA), matrixB = MatrixRenderer(matB);
-	std::string currentValue;
-	Matrix a = handleInput(currentValue, matrixA, "A");
-	Matrix b = handleInput(currentValue, matrixB, "B");
+	std::string currentValueA, currentValueB;
+	Matrix a = handleInput(currentValueA, matrixA, "A");
+	Matrix b = handleInput(currentValueB, matrixB, "B");
 	system("cls");
 	unsigned int option;
 	std::cout << "Options:\n1. A+B\n2. A-B\n3. B-A\n4. AxB\n5. BxA\n";
