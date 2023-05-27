@@ -3,10 +3,10 @@
 class MatrixRenderer : public Matrix
 {
 public:
-	uint32_t    getCurrentRow() const;
-	uint32_t getCurrentColumn() const;
 	MatrixRenderer(matrix_t matrix);
 	MatrixRenderer(Matrix matrix);
+	uint32_t    getCurrentRow() const;
+	uint32_t getCurrentColumn() const;
 	MatrixRenderer*    up();
 	MatrixRenderer*  down();
 	MatrixRenderer*  left();

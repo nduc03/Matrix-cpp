@@ -17,13 +17,11 @@ int MatrixHelper::findMaxLen(matrix_t matrix) {
 void MatrixHelper::initMatrix(matrix_t& empty_matrix, int row, int column) {
 	if (row < 1 || column < 1) throw MatrixError("Invalid row or column.");
 	if (row > 20 || column > 20) throw MatrixError("Matrix size is too big.");
-	auto temp = std::vector<double>(column, 0.0);
-	empty_matrix = MatrixHelper::matrix_t(row, temp);
+	empty_matrix = MatrixHelper::matrix_t(row, std::vector<double>(column, 0.0));
 }
 
 MatrixHelper::matrix_t MatrixHelper::createMatrix(int row, int column) {
 	if (row < 1 || column < 1) throw MatrixError("Invalid row or column.");
 	if (row > 20 || column > 20) throw MatrixError("Matrix size is too big.");
-	auto temp = std::vector<double>(column, 0.0);
-	return MatrixHelper::matrix_t(row, temp);
+	return MatrixHelper::matrix_t(row, std::vector<double>(column, 0.0));
 }

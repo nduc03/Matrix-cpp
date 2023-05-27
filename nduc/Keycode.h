@@ -1,6 +1,6 @@
 #pragma once
 
-const int   SPECIAL_KEY_1 = 0;
+const int SPECIAL_KEY_1 = 0;
 const int SPECIAL_KEY_2 = 224;
 
 const int ARROW_UP    = 72;
@@ -22,6 +22,6 @@ const int CHAR_NINE  = 57;
 
 const int BACKSPACE = 8;
 const int KEY_ENTER = 13;
-const int CTRL_S = 19;
+const int CTRL_S    = 19;
 
 const int INVALID_KEY = -1;

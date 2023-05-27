@@ -126,10 +126,10 @@ std::string Matrix::toString() const {
 	if (m_row == 0 || m_column == 0) return "empty matrix";
 	int maxLen = MatrixHelper::findMaxLen(m_matrix);
 	std::string result = "";
-	std::string before = "|", after = "|";
+	std::string before = "|", end_row = "|";
 	if (m_row == 1 && m_column == 1) {
 		before = "[";
-		after = "]";
+		end_row = "]";
 	}
 	for (auto& row : m_matrix) {
 		for (auto& element : row) {
@@ -138,7 +138,7 @@ std::string Matrix::toString() const {
 			);
 			result.append(adjustedElement);
 		}
-		result.append(after + "\n");
+		result.append(end_row + "\n");
 	}
 	return result;
 }

@@ -58,10 +58,11 @@ void handleNext(std::string& currentValue, MatrixRenderer& matrixRenderer) {
 	matrixRenderer.next();
 }
 
-Matrix handleInput(std::string& currentValue, MatrixRenderer& matrixRenderer, std::string matrixName) {
-	currentValue = trim(currentValue);
+Matrix handleInput(MatrixRenderer& matrixRenderer, std::string matrixName) {
+	std::string currentValue = "";
 	while (true) {
 		system("cls");
+		std::cout << "(hint: use arrow key to navigate through matrix)\n";
 		std::cout << "Enter value for matrix " << matrixName << std::endl;
 		matrixRenderer.printWithIndicator();
 		std::cout << "Enter value for element at row "
@@ -148,14 +149,14 @@ unsigned int getRowColInput() {
 				return std::stod(currentValue);
 			}
 			else if (currentValue.front() != CHAR_ONE && currentValue.at(1) != CHAR_ZERO) {
-				throw std::exception("Somethings wrong with getRowColInput()");
+				throw std::exception("Something wrong with getRowColInput()");
 			}
 			else if (input == BACKSPACE) {
 				currentValue.pop_back();
 				backspace();
 			}
 		}
-		else throw std::exception("Somethings really wrong with getRowColInput()");
+		else throw std::exception("Something really wrong with getRowColInput()");
 	}
 }
 
@@ -175,11 +176,10 @@ void start() {
 	std::cout << "Matrix calculator (beta)\n-------------------------------------------\n";
 	Matrix::matrix_t matA = initMatrixFromInput("A"), matB = initMatrixFromInput("B");
 	MatrixRenderer matrixA = MatrixRenderer(matA), matrixB = MatrixRenderer(matB);
-	std::string currentValueA, currentValueB;
-	Matrix a = handleInput(currentValueA, matrixA, "A");
-	Matrix b = handleInput(currentValueB, matrixB, "B");
+	Matrix a = handleInput(matrixA, "A");
+	Matrix b = handleInput(matrixB, "B");
 	system("cls");
-	unsigned int option;
+	int option;
 	std::cout << "Options:\n1. A+B\n2. A-B\n3. B-A\n4. AxB\n5. BxA\n";
 	do {
 		option = _getch();

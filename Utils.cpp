@@ -14,7 +14,7 @@ std::string trim(const std::string& value) {
 
 std::string truncateZero(const std::string& value) {
 	std::string result = value;
-	while ((result.back() == '0' && result.find('.') != std::string::npos) || result.back() == '.') {
+	while ((result.find('.') != std::string::npos && result.back() == '0') || result.back() == '.') {
 		result.pop_back();
 	}
 	return result;
@@ -24,7 +24,7 @@ std::string fillSpaceLeft(const std::string& value, int requiredLength) {
 	std::string result = "";
 	int requiredSpace = requiredLength - value.size();
 	for (int i = 0; i < requiredSpace; i++) {
-		result += " ";
+		result.push_back(' ');
 	}
 	return result + value;
 }

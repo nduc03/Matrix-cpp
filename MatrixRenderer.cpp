@@ -1,9 +1,10 @@
+#include <iostream>
 #include <Windows.h>
 #include <conio.h>
+
 #include "MatrixRenderer.h"
 #include "MatrixHelper.h"
 #include "Utils.h"
-#include <iostream>
 
 uint32_t MatrixRenderer::getCurrentRow() const
 {
@@ -18,11 +19,13 @@ uint32_t MatrixRenderer::getCurrentColumn() const
 MatrixRenderer::MatrixRenderer(matrix_t matrix) : Matrix(matrix)
 {
 	this->currentRow = 0; this->currentColumn = 0;
+	this->maxLen = 1;
 }
 
 MatrixRenderer::MatrixRenderer(Matrix matrix) : Matrix(matrix.getMatrix())
 {
 	this->currentRow = 0; this->currentColumn = 0;
+	this->maxLen = 1;
 }
 
 MatrixRenderer* MatrixRenderer::up()
@@ -71,7 +74,8 @@ MatrixRenderer* MatrixRenderer::go_to(uint32_t row, uint32_t column)
 void MatrixRenderer::setCurrentElement(double value)
 {
 	this->setElement(value, currentRow, currentColumn);
-	this->maxLen = MatrixHelper::findMaxLen(this->getMatrix());
+	int len = truncateZero(std::to_string(value)).size();
+	if (len > this->maxLen) this->maxLen = len;
 }
 
 std::string MatrixRenderer::toStringWithIndicator() const
@@ -108,24 +112,24 @@ void MatrixRenderer::printWithIndicator() const
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	const int COLOR = 31;
 	const int DEFAULT_COLOR = 15;
-	std::string string = this->toStringWithIndicator();
+	std::string matrix_str = this->toStringWithIndicator();
 
-	std::string begin = string.substr(0, string.find('['));
+	std::string begin = matrix_str.substr(0, matrix_str.find('['));
 	std::cout << begin;
 
-	string = string.erase(0, string.find('[') + 1);
+	matrix_str = matrix_str.erase(0, matrix_str.find('[') + 1);
 
 	SetConsoleTextAttribute(hConsole, COLOR);
 	std::cout << '[';
 	SetConsoleTextAttribute(hConsole, DEFAULT_COLOR);
 
-	std::string middle = string.substr(0, string.find(']'));
-	std::cout << middle;
+	std::string inside_indicator = matrix_str.substr(0, matrix_str.find(']'));
+	std::cout << inside_indicator;
 
 	SetConsoleTextAttribute(hConsole, COLOR);
 	std::cout << ']';
 	SetConsoleTextAttribute(hConsole, DEFAULT_COLOR);
 
-	std::string last = string.erase(0, string.find(']') + 1);
+	std::string last = matrix_str.erase(0, matrix_str.find(']') + 1);
 	std::cout << last;
 }
